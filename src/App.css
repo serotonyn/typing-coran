@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-size: 30px;
 }
 
 .App-logo {
@@ -30,4 +31,19 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.highlight {
+  background: yellow;
+}
+
+.duplicate {
+  position: absolute;
+  top: 20%;
+  font-family: -webkit-pictograph;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 59px;
+  font-variant-ligatures: none;
+  letter-spacing: 4px;
 }
