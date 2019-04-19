@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import renderCorrectLigature from "./renderCorrectLigatures";
 import "./App.css";
-import path from "path";
+// import path from "path";
 import Keyboard from "./Keyboard";
 
 interface State {
@@ -21,7 +21,7 @@ interface State {
 
 class App extends Component<{}, State> {
   state: State = {
-    curSourat: 2,
+    curSourat: 1,
     totalVersesCount: 0,
     name: "",
     verses: {},
@@ -68,9 +68,11 @@ class App extends Component<{}, State> {
   }
 
   getSourat = async () => {
-    const { curSourat } = this.state;
-    const filePath = path.join("/sourates", `${curSourat}.json`);
-    const res = await fetch(filePath);
+    // const { curSourat } = this.state;
+    // const filePath = path.join("/sourates", `${curSourat}.json`);
+    const res = await fetch(
+      "https://raw.githubusercontent.com/semarketir/quranjson/master/source/surah/surah_1.json"
+    );
     const data = await res.json();
     const { count, name, verse } = data;
     this.setState({ totalVersesCount: count, name, verses: verse }, () =>
