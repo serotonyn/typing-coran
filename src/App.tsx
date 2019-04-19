@@ -15,6 +15,7 @@ interface State {
   curWithoutTashkil: string;
   userInput: string;
   curCharNum: number;
+  indexOfLigaturedLaOfNegation: number;
 }
 
 class App extends Component<{}, State> {
@@ -26,18 +27,32 @@ class App extends Component<{}, State> {
     curVerse: "",
     curWithoutTashkil: "",
     userInput: "",
-    curCharNum: 0
+    curCharNum: 0,
+    indexOfLigaturedLaOfNegation: -1
   };
 
   handleKeyDown = (e: KeyboardEvent) => {
-    const { curCharNum, curWithoutTashkil } = this.state;
-    const end = curCharNum === curWithoutTashkil.length - 1;
+    const {
+      curCharNum,
+      curWithoutTashkil,
+      curVerseNum,
+      totalVersesCount
+    } = this.state;
+    const isVerseEnd = curCharNum === curWithoutTashkil.length - 1;
     const curChar = curWithoutTashkil[curCharNum];
     const inputCharValue = e.key;
     const isInputEqualCurChar = curChar === inputCharValue;
+    const isEndOfSourat = curVerseNum === totalVersesCount;
 
-    if (!end && isInputEqualCurChar) {
+    if (!isVerseEnd && isInputEqualCurChar) {
       this.setState({ userInput: inputCharValue, curCharNum: curCharNum + 1 });
+    } else if (isVerseEnd && !isEndOfSourat) {
+      this.setState(
+        state => ({ curVerseNum: state.curVerseNum + 1, curCharNum: 0 }),
+        () => this.setCurVerse()
+      );
+    } else if (isEndOfSourat && isVerseEnd) {
+      console.log("Congrats you've just finished this sourat");
     }
   };
 
@@ -69,18 +84,36 @@ class App extends Component<{}, State> {
 
   setCurVerseWithoutTechkil = () => {
     const { curVerse } = this.state;
-    const stringWithoutTashkil = curVerse.replace(/ِ|ُ|ٓ|ٰ|ْ|ٌ|ٍ|ً|ّ|َ/g, "");
+    let stringWithoutTashkil = curVerse.replace(/ِ|ُ|ٓ|ٰ|ْ|ٌ|ٍ|ً|ّ|َ/g, "");
+
+    let indexOfAlef = stringWithoutTashkil.indexOf("لا ");
+    if (indexOfAlef > -1) {
+      this.setState({ indexOfLigaturedLaOfNegation: indexOfAlef });
+    }
 
     this.setState({ curWithoutTashkil: stringWithoutTashkil });
   };
 
   updateCurCharNum = () => {
-    const { curCharNum } = this.state;
-    this.setState({ curCharNum: curCharNum + 1 });
+    const { curCharNum, curWithoutTashkil } = this.state;
+    const end = curCharNum === curWithoutTashkil.length - 1;
+    if (!end) {
+      const { curCharNum } = this.state;
+      this.setState({ curCharNum: curCharNum + 1 });
+    } else {
+      this.setState(
+        state => ({ curVerseNum: state.curVerseNum + 1, curCharNum: 0 }),
+        () => this.setCurVerse()
+      );
+    }
   };
 
   getTextWithHighlitedChar = () => {
-    const { curCharNum, curWithoutTashkil } = this.state;
+    const {
+      curCharNum,
+      curWithoutTashkil,
+      indexOfLigaturedLaOfNegation
+    } = this.state;
     const curChar = curWithoutTashkil[curCharNum];
     const beforeCurChar = curWithoutTashkil.slice(0, curCharNum);
     const afterCurChar = curWithoutTashkil.slice(curCharNum + 1);
@@ -89,7 +122,8 @@ class App extends Component<{}, State> {
       curChar,
       afterCurChar,
       curCharNum,
-      curWithoutTashkil
+      curWithoutTashkil,
+      indexOfLigaturedLaOfNegation
     );
   };
 

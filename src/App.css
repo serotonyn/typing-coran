@@ -36,6 +36,9 @@
 .highlight {
   background: yellow;
 }
+.hideLetter {
+  color: yellow;
+}
 
 .duplicate {
   position: absolute;

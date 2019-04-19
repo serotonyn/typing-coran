@@ -86,7 +86,7 @@ export default class KeyboardLayout extends Component<Props, {}> {
   render() {
     const { keyToPress } = this.props;
     const wichArrContainsKeyToPress = this.showCorrectLayout(keyToPress);
-    console.log(wichArrContainsKeyToPress);
+
     return (
       <div className="keyboard">
         {layout[wichArrContainsKeyToPress].map((line: any) => {
