@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/typing-coran/precache-manifest.5dbac41056efdcc9a0bd13f29645d5e5.js"
+  "/typing-coran/precache-manifest.94ed6d0f20e7160bc4bd2169c641e649.js"
 );
 
 workbox.clientsClaim();

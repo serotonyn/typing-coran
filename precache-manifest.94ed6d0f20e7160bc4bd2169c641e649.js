@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/typing-coran/static/js/runtime~main.3be33c7b.js"
   },
   {
-    "revision": "23f2f7fd97cf4104f89d",
-    "url": "/typing-coran/static/js/main.d4d0a02e.chunk.js"
+    "revision": "4df827432ec86c4dd532",
+    "url": "/typing-coran/static/js/main.a6a13cb2.chunk.js"
   },
   {
     "revision": "5c5136fad850720ab5a8",
     "url": "/typing-coran/static/js/2.81691a1e.chunk.js"
   },
   {
-    "revision": "23f2f7fd97cf4104f89d",
+    "revision": "4df827432ec86c4dd532",
     "url": "/typing-coran/static/css/main.c4721349.chunk.css"
   },
   {
-    "revision": "ebaa43db1534351414570080a8ef473e",
+    "revision": "850ed2c3ac0d616cd0a3f03060d65c11",
     "url": "/typing-coran/index.html"
   }
 ];
