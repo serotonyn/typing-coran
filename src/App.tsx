@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import renderCorrectLigature from "./renderCorrectLigatures";
 import "./App.css";
 import path from "path";
+import Keyboard from "./Keyboard";
 
 interface State {
   totalVersesCount: number;
@@ -13,9 +14,7 @@ interface State {
   curVerse: string;
   curWithoutTashkil: string;
   userInput: string;
-  // isInputCorrect: boolean;
   curCharNum: number;
-  arrOfTashkilCodes: number[];
 }
 
 class App extends Component<{}, State> {
@@ -27,13 +26,28 @@ class App extends Component<{}, State> {
     curVerse: "",
     curWithoutTashkil: "",
     userInput: "",
-    // isInputCorrect: false,
-    curCharNum: 0,
-    arrOfTashkilCodes: [1616, 1618, 1617, 1614, 1648]
+    curCharNum: 0
+  };
+
+  handleKeyDown = (e: KeyboardEvent) => {
+    const { curCharNum, curWithoutTashkil } = this.state;
+    const end = curCharNum === curWithoutTashkil.length - 1;
+    const curChar = curWithoutTashkil[curCharNum];
+    const inputCharValue = e.key;
+    const isInputEqualCurChar = curChar === inputCharValue;
+
+    if (!end && isInputEqualCurChar) {
+      this.setState({ userInput: inputCharValue, curCharNum: curCharNum + 1 });
+    }
   };
 
   componentDidMount() {
     this.getSourat();
+    document.addEventListener("keydown", e => this.handleKeyDown(e));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", e => this.handleKeyDown(e));
   }
 
   getSourat = async () => {
@@ -58,10 +72,6 @@ class App extends Component<{}, State> {
     const stringWithoutTashkil = curVerse.replace(/ِ|ُ|ٓ|ٰ|ْ|ٌ|ٍ|ً|ّ|َ/g, "");
 
     this.setState({ curWithoutTashkil: stringWithoutTashkil });
-  };
-
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ userInput: e.target.value });
   };
 
   updateCurCharNum = () => {
@@ -95,12 +105,14 @@ class App extends Component<{}, State> {
   render() {
     const { curWithoutTashkil, curCharNum } = this.state;
     if (!curWithoutTashkil) return null;
-    console.log(curCharNum);
+    let curChar = curWithoutTashkil[curCharNum];
+    curChar = curChar === " " ? "space" : curChar;
     return (
       <>
         <div className="App">
           {this.text()}
           {this.textTachkil()}
+          <Keyboard keyToPress={curChar} />
           <div>
             <button onClick={this.updateCurCharNum}>next char</button>
             <button
@@ -111,7 +123,6 @@ class App extends Component<{}, State> {
               prev char
             </button>
           </div>
-          <input name="userInput" onChange={this.handleChange} />
         </div>
       </>
     );
