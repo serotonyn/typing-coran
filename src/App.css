@@ -34,11 +34,11 @@
 }
 
 .highlight {
-  background: yellow;
+  background: #9832ff54;
 }
-.hideLetter {
-  color: yellow;
-}
+/* .hideLetter { */
+/* color: yellow; */
+/* } */
 
 .duplicate {
   position: absolute;
@@ -49,6 +49,7 @@
   font-size: 59px;
   font-variant-ligatures: none;
   letter-spacing: 4px;
+  /* min-width: 1068px; */
 }
 
 .keyboard {
@@ -58,11 +59,12 @@
   transform: translateX(-50%);
 
   width: 100%;
+  min-width: 1068px;
 }
 
 .keyboard > div:nth-child(5) {
   /* hide space bar line */
-  display: none;
+  /* display: none; */
 }
 
 .button {
@@ -74,9 +76,13 @@
   padding: 1px 7px 2px;
   font-size: 29px;
 
-  margin: 10px 10px;
-  width: 50px;
-  height: 50px;
+  margin: 5.1px 3.1px;
+  width: 35.8px;
+  height: 43px;
+}
+
+.special_button {
+  font-size: 15px;
 }
 
 .pressed {
@@ -86,4 +92,66 @@
 .line {
   display: flex;
   justify-content: center;
+}
+
+.line .button:nth-child(1) {
+  background: lightgrey;
+}
+.line .button:nth-child(2) {
+  background: pink;
+}
+.line .button:nth-child(3) {
+  background: teal;
+}
+.line .button:nth-child(4) {
+  background: paleturquoise;
+}
+.line .button:nth-child(5) {
+  background: sandybrown;
+}
+.line .button:nth-child(6) {
+  background: sandybrown;
+}
+.line .button:nth-child(7) {
+  background: cornflowerblue;
+}
+.line .button:nth-child(8) {
+  background: cornflowerblue;
+}
+.line .button:nth-child(9) {
+  background: paleturquoise;
+}
+.line .button:nth-child(10) {
+  background: teal;
+}
+.line .button:nth-child(11) {
+  background: pink;
+}
+.line .button:nth-child(12) {
+  background: pink;
+}
+.line .button:nth-child(13) {
+  background: pink;
+}
+.line .button:nth-child(14) {
+  background: lightgrey;
+}
+
+.tab {
+  width: 60px;
+}
+.caplock {
+  width: 77px;
+}
+.restart {
+  width: 77px;
+}
+.shift {
+  width: 105px;
+}
+.space {
+  width: 305px;
+}
+.alt {
+  width: 45px;
 }

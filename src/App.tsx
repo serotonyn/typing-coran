@@ -7,6 +7,7 @@ import path from "path";
 import Keyboard from "./Keyboard";
 
 interface State {
+  curSourat: number;
   totalVersesCount: number;
   name: string;
   verses: any;
@@ -20,6 +21,7 @@ interface State {
 
 class App extends Component<{}, State> {
   state: State = {
+    curSourat: 2,
     totalVersesCount: 0,
     name: "",
     verses: {},
@@ -66,7 +68,7 @@ class App extends Component<{}, State> {
   }
 
   getSourat = async () => {
-    const curSourat = 1;
+    const { curSourat } = this.state;
     const filePath = path.join("/sourates", `${curSourat}.json`);
     const res = await fetch(filePath);
     const data = await res.json();
