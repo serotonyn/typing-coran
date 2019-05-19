@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const _ligature_ = (
   beforeCurChar: string,
@@ -7,9 +7,9 @@ const _ligature_ = (
 ) => {
   return (
     <div>
-      {beforeCurChar + "\u200d"}
-      <span className="highlight">{`\u200d${curChar}\u200d`}</span>
-      {"\u200d" + afterCurChar}
+      {beforeCurChar + '\u200d'}
+      <span className='highlight'>{`\u200d${curChar}\u200d`}</span>
+      {'\u200d' + afterCurChar}
     </div>
   );
 };
@@ -21,8 +21,8 @@ const ligature_ = (
 ) => {
   return (
     <div>
-      {beforeCurChar + "\u200d"}
-      <span className="highlight">{`\u200d${curChar}`}</span>
+      {beforeCurChar + '\u200d'}
+      <span className='highlight'>{`\u200d${curChar}`}</span>
       {afterCurChar}
     </div>
   );
@@ -36,8 +36,8 @@ const _ligature = (
   return (
     <div>
       {beforeCurChar}
-      <span className="highlight">{`${curChar}\u200d`}</span>
-      {"\u200d" + afterCurChar}
+      <span className='highlight'>{`${curChar}\u200d`}</span>
+      {'\u200d' + afterCurChar}
     </div>
   );
 };
@@ -50,7 +50,7 @@ const ligature = (
   return (
     <div>
       {beforeCurChar}
-      <span className="highlight">{curChar}</span>
+      <span className='highlight'>{curChar}</span>
       {afterCurChar}
     </div>
   );
@@ -64,7 +64,7 @@ const curCharLam = (
   return (
     <div>
       {beforeCurChar}
-      <span className="highlight">{`${curChar}${afterCurChar[0]}`}</span>
+      <span className='highlight'>{`${curChar}${afterCurChar[0]}`}</span>
       {afterCurChar.slice(1)}
     </div>
   );
@@ -78,7 +78,7 @@ const curCharAlef = (
   return (
     <div>
       {beforeCurChar.slice(0, -1)}
-      <span className="highlight">{`${beforeCurChar.slice(
+      <span className='highlight'>{`${beforeCurChar.slice(
         -1
       )}${curChar}`}</span>
       {afterCurChar}
@@ -106,23 +106,23 @@ export default (
     }
   }
 
-  const isNextCharAnEmptyString = curWithoutTashkil[curCharNum + 1] === " ";
-  const isPrevCharAnEmptyString = curWithoutTashkil[curCharNum - 1] === " ";
-  const isCurCharAnEmptyString = curWithoutTashkil[curCharNum] === " ";
+  const isNextCharAnEmptyString = curWithoutTashkil[curCharNum + 2] === ' ';
+  const isPrevCharAnEmptyString = curWithoutTashkil[curCharNum - 1] === ' ';
+  const isCurCharAnEmptyString = curWithoutTashkil[curCharNum] === ' ';
   const isStartOfSentence = curCharNum === 0;
-  const isEndOfSentence = curCharNum === curWithoutTashkil.length - 1;
+  const isEndOfSentence = curCharNum === curWithoutTashkil.length - 2;
 
   const isAlefSucceededByHaa =
-    curChar === "ٱ" && curWithoutTashkil[curCharNum + 1] === "ه";
+    curChar === 'ٱ' && curWithoutTashkil[curCharNum + 1] === 'ه';
 
   const isHaaPreceededByAlef =
-    curChar === "ه" && curWithoutTashkil[curCharNum - 1] === "ٱ";
+    curChar === 'ه' && curWithoutTashkil[curCharNum - 1] === 'ٱ';
 
   const isWaaSucceedByLam =
-    curChar === "و" && curWithoutTashkil[curCharNum + 1] === "ل";
+    curChar === 'و' && curWithoutTashkil[curCharNum + 1] === 'ل';
 
   const isLamPreceededByWaa =
-    curChar === "ل" && curWithoutTashkil[curCharNum - 1] === "و";
+    curChar === 'ل' && curWithoutTashkil[curCharNum - 1] === 'و';
 
   if (isNextCharAnEmptyString || isEndOfSentence) {
     return ligature_(beforeCurChar, curChar, afterCurChar);

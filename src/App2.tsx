@@ -25,23 +25,18 @@ class App extends Component<{}, State> {
     totalVersesCount: 0,
     name: '',
     verses: {},
-    curVerseNum: 1,
+    curVerseNum: 2,
     curVerse: '',
     curWithoutTashkil: '',
     userInput: '',
-    curCharNum: 1,
+    curCharNum: 0,
     indexOfLigaturedLaOfNegation: -1
   };
 
   handleKeyDown = (e: KeyboardEvent) => {
-    const {
-      curCharNum,
-      curWithoutTashkil,
-      curVerseNum,
-      totalVersesCount
-    } = this.state;
-    const isVerseEnd = curCharNum === curWithoutTashkil.length - 1;
-    const curChar = curWithoutTashkil[curCharNum];
+    const { curCharNum, curVerseNum, totalVersesCount, curVerse } = this.state;
+    const isVerseEnd = curCharNum === curVerse.length - 2;
+    const curChar = curVerse[curCharNum];
     const inputCharValue = e.key;
     const isInputEqualCurChar = curChar === inputCharValue;
     const isEndOfSourat = curVerseNum === totalVersesCount;
@@ -83,19 +78,7 @@ class App extends Component<{}, State> {
   setCurVerse = () => {
     const { verses, curVerseNum } = this.state;
     const curVerse = verses[`verse_${curVerseNum}`];
-    this.setState({ curVerse }, () => this.setCurVerseWithoutTechkil());
-  };
-
-  setCurVerseWithoutTechkil = () => {
-    const { curVerse } = this.state;
-    let stringWithoutTashkil = curVerse.replace(/ِ|ُ|ٓ|ٰ|ْ|ٌ|ٍ|ً|ّ|َ/g, '');
-
-    let indexOfAlef = stringWithoutTashkil.indexOf('لا ');
-    if (indexOfAlef > -1) {
-      this.setState({ indexOfLigaturedLaOfNegation: indexOfAlef });
-    }
-
-    this.setState({ curWithoutTashkil: stringWithoutTashkil });
+    this.setState({ curVerse });
   };
 
   updateCurCharNum = () => {
@@ -113,26 +96,67 @@ class App extends Component<{}, State> {
   };
 
   getTextWithHighlitedChar = () => {
-    const {
-      curCharNum,
-      curWithoutTashkil,
-      indexOfLigaturedLaOfNegation
-    } = this.state;
-    const curChar = curWithoutTashkil[curCharNum];
-    const beforeCurChar = curWithoutTashkil.slice(0, curCharNum);
-    const afterCurChar = curWithoutTashkil.slice(curCharNum + 1);
-    return renderCorrectLigature(
-      beforeCurChar,
-      curChar,
-      afterCurChar,
-      curCharNum,
-      curWithoutTashkil,
-      indexOfLigaturedLaOfNegation
-    );
+    const { curCharNum, curVerse, indexOfLigaturedLaOfNegation } = this.state;
+    const curChar = curVerse[curCharNum];
+    const beforeCurChar = curVerse.slice(0, curCharNum);
+    const afterCurChar = curVerse.slice(curCharNum + 1);
+    const arr = [1619, 1616, 1618, 1617, 1614, 1648, 1615];
+    const nextChar = curVerse[curCharNum + 1];
+    const nextNextChar = curVerse[curCharNum + 2];
+    console.log(curChar, curChar.charCodeAt(0));
+    if (arr.includes(curChar.charCodeAt(0))) {
+      this.setState({ curCharNum: curCharNum + 1 });
+    } else {
+      // if next char is also a tashkil /> omit it
+      if (arr.includes(nextChar.charCodeAt(0))) {
+        if (!nextNextChar) {
+          return renderCorrectLigature(
+            beforeCurChar,
+            curChar,
+            afterCurChar.slice(2),
+            curCharNum,
+            curVerse,
+            indexOfLigaturedLaOfNegation
+          );
+        }
+        if (arr.includes(nextNextChar.charCodeAt(0))) {
+          return renderCorrectLigature(
+            beforeCurChar,
+            curChar,
+            afterCurChar.slice(2),
+            curCharNum,
+            curVerse,
+            indexOfLigaturedLaOfNegation
+          );
+        }
+        return renderCorrectLigature(
+          beforeCurChar,
+          curChar,
+          afterCurChar.slice(1),
+          curCharNum,
+          curVerse,
+          indexOfLigaturedLaOfNegation
+        );
+      }
+      return renderCorrectLigature(
+        beforeCurChar,
+        curChar,
+        afterCurChar,
+        curCharNum,
+        curVerse,
+        indexOfLigaturedLaOfNegation
+      );
+    }
   };
 
   textTachkil = () => {
     const { curVerse } = this.state;
+    const codes = curVerse
+      .split('')
+      .map(c => c.charCodeAt(0))
+      .join(',');
+    console.log(codes);
+    // return <div className='duplicate'>{codes}</div>;
     return <div className='duplicate'>{curVerse}</div>;
   };
 
@@ -141,15 +165,15 @@ class App extends Component<{}, State> {
   };
 
   render() {
-    const { curWithoutTashkil, curCharNum } = this.state;
-    if (!curWithoutTashkil) return null;
-    let curChar = curWithoutTashkil[curCharNum];
+    const { curVerse, curCharNum } = this.state;
+    if (!curVerse) return null;
+    let curChar = curVerse[curCharNum];
     curChar = curChar === ' ' ? 'space' : curChar;
     return (
       <>
         <div className='App'>
           {this.text()}
-          {this.textTachkil()}
+          {/* {this.textTachkil()} */}
           <Keyboard keyToPress={curChar} />
           <div>
             <button onClick={this.updateCurCharNum}>next char</button>
